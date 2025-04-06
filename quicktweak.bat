@@ -4,6 +4,9 @@ if '%errorlevel%' NEQ '0' (
     exit /b
 )
 
+cls
+chcp 65001 >nul 2>&1
+
 @echo off
 title !MADE BY LOFINSXDD ON GITHUB 2025!
 
@@ -25,20 +28,20 @@ REM LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
 REM OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 REM SOFTWARE.
 
-echo _______________________________________________________________
-echo |                                                             |
-echo | 01101001001100QuickTweakCMD10010100010001000110000100001110 |
-echo | 1000001100101010100001000010000QuickTweakCMD001101000010111 |
-echo | 0110000QuickTweakCMD101101110011011110110111101101111011001 |
-echo | 0110111101101111011001000110000101QuickTweakCMD101110011011 |
-echo | 011011QuickTweakCMD1101101111011001000110000101101110011011 |
-echo | 011011110110111QuickTweakCMD1011001100110000101101110011011 |
-echo | 01101QuickTweakCMD11101101111011001011100000101101110011011 |
-echo | 0110111101101001011QuickTweakCMD010100010010010010001000111 |
-echo |_____________________________________________________________|
+echo.     _____________________________________________________________
+echo.                                                                  
+echo.      01101001001100QuickTweakCMD10010100010001000110000100001110 
+echo.      1000001100101010100001000010000QuickTweakCMD001101000010111 
+echo.      0110000QuickTweakCMD101101110011011110110111101101111011001 
+echo.      0110111101101111011001000110000101QuickTweakCMD101110011011 
+echo.      011011QuickTweakCMD1101101111011001000110000101101110011011 
+echo.      011011110110111QuickTweakCMD1011001100110000101101110011011 
+echo.      01101QuickTweakCMD11101101111011001011100000101101110011011 
+echo.      0110111101101001011QuickTweakCMD010100010010010010001000111 
+echo.     _____________________________________________________________
 
-echo 1. AUTOMATIC OPTIMIZATION
-echo 2. Exit
+echo. 1. AUTOMATIC OPTIMIZATION
+echo. 2. Exit
 
 set /p choice="Choose an option (1-3): "
 if not "%choice%"=="1" if not "%choice%"=="2" exit
@@ -47,22 +50,26 @@ if "%choice%"=="1" goto :automatic_optimization
 if "%choice%"=="2" exit
 
 :automatic_optimization
+cls
 REM Starting automatic optimization...
 timeout /t 1 > nul
+cls
 
 REM Running SFC and DISM scan...
 sfc /scannow > nul
 DISM /Online /Cleanup-Image /RestoreHealth > nul
 REM SFC and DISM scans completed!
 timeout /t 2 > nul
+cls
 
 REM Clearing system logs...
 wevtutil qe System /f:text > nul
 wevtutil qe Application /f:text > nul
 wevtutil cl System > nul
 wevtutil cl Application > nul
-REM System logs cleared.
+REM System logs cleared!
 timeout /t 2 > nul
+cls
 
 REM Clearing temporary files...
 del /q /f /s %temp%\* > nul
@@ -73,18 +80,23 @@ del /q /f /s C:\Windows\Prefetch\* > nul
 for /d %%i in (C:\Windows\Prefetch\*) do rd /s /q %%i > nul
 REM Temporary files cleared!
 timeout /t 2 > nul
+cls
 
 REM Flushing DNS cache...
 ipconfig /flushdns > nul
 REM DNS cache flushed!
 timeout /t 2 > nul
+cls
 
 REM Disabling hibernation...
 powercfg -h off > nul
 REM Hibernation disabled!
 timeout /t 2 > nul
+cls
 
 REM Removing Telemetry...
+timeout /t 1 > nul
+cls
 REM Adjusting registry settings...
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v ContentDeliveryAllowed /t REG_DWORD /d 0 /f
@@ -111,6 +123,7 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v EnableDeadGWDetect /t REG_DWORD /d 0 /f
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v EnableICMPRedirect /t REG_DWORD /d 0 /f
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v PerformRouterDiscovery /t REG_DWORD /d 0 /f
+cls
 
 REM Disabling telemetry related scheduled tasks...
 set tasks=(
@@ -132,3 +145,5 @@ set tasks=(
 for %%T in %tasks% do (
     schtasks /Change /TN %%~T /Disable 2>nul
 )
+timeout /t 2 > nul
+cls
