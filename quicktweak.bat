@@ -1,9 +1,3 @@
-if '%errorlevel%' NEQ '0' (
-    set "batchPath=%~f0"
-    start "" mshta "javascript:var shell=new ActiveXObject('shell.application');shell.ShellExecute('%batchPath%', '', '', 'runas', 1);close();"
-    exit /b
-)
-
 cls
 chcp 65001 >nul 2>&1
 
@@ -40,8 +34,8 @@ echo.      01101QuickTweakCMD11101101111011001011100000101101110011011
 echo.      0110111101101001011QuickTweakCMD010100010010010010001000111 
 echo.     _____________________________________________________________
 
-echo. 1. AUTOMATIC OPTIMIZATION
-echo. 2. Exit
+echo 1. AUTOMATIC OPTIMIZATION
+echo 2. Exit
 
 set /p choice="Choose an option (1-3): "
 if not "%choice%"=="1" if not "%choice%"=="2" exit
@@ -51,53 +45,53 @@ if "%choice%"=="2" exit
 
 :automatic_optimization
 cls
-REM Starting automatic optimization...
-timeout /t 1 > nul
+echo Starting automatic optimization...
+timeout /t 3 > nul
 cls
 
-REM Running SFC and DISM scan...
+echo Running SFC and DISM scan...
 sfc /scannow > nul
 DISM /Online /Cleanup-Image /RestoreHealth > nul
-REM SFC and DISM scans completed!
-timeout /t 2 > nul
+echo. SFC and DISM scans completed!
+timeout /t 5 > nul
 cls
 
-REM Clearing system logs...
+echo Clearing system logs...
 wevtutil qe System /f:text > nul
 wevtutil qe Application /f:text > nul
 wevtutil cl System > nul
 wevtutil cl Application > nul
-REM System logs cleared!
-timeout /t 2 > nul
+echo System logs cleared!
+timeout /t 5 > nul
 cls
 
-REM Clearing temporary files...
+echo Clearing temporary files...
 del /q /f /s %temp%\* > nul
 for /d %%i in (%temp%\*) do rd /s /q %%i > nul
 del /q /f /s C:\Windows\Temp\* > nul
 for /d %%i in (C:\Windows\Temp\*) do rd /s /q %%i > nul
 del /q /f /s C:\Windows\Prefetch\* > nul
 for /d %%i in (C:\Windows\Prefetch\*) do rd /s /q %%i > nul
-REM Temporary files cleared!
-timeout /t 2 > nul
+echo Temporary files cleared!
+timeout /t 5 > nul
 cls
 
-REM Flushing DNS cache...
+echo Flushing DNS cache...
 ipconfig /flushdns > nul
-REM DNS cache flushed!
-timeout /t 2 > nul
+echo DNS cache flushed!
+timeout /t 5 > nul
 cls
 
-REM Disabling hibernation...
+echo Disabling hibernation...
 powercfg -h off > nul
-REM Hibernation disabled!
-timeout /t 2 > nul
+echo Hibernation disabled!
+timeout /t 5 > nul
 cls
 
-REM Removing Telemetry...
-timeout /t 1 > nul
+echo Removing Telemetry...
+timeout /t 3 > nul
 cls
-REM Adjusting registry settings...
+echo Adjusting registry settings...
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v ContentDeliveryAllowed /t REG_DWORD /d 0 /f
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v OemPreInstalledAppsEnabled /t REG_DWORD /d 0 /f
@@ -124,8 +118,10 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v EnableDeadG
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v EnableICMPRedirect /t REG_DWORD /d 0 /f
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v PerformRouterDiscovery /t REG_DWORD /d 0 /f
 cls
+echo Telemetry related registry entries were disabled!
+timeout /t 5 > nul
 
-REM Disabling telemetry related scheduled tasks...
+echo Disabling telemetry related scheduled tasks...
 set tasks=(
     "Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
     "Microsoft\Windows\Application Experience\ProgramDataUpdater"
@@ -145,5 +141,6 @@ set tasks=(
 for %%T in %tasks% do (
     schtasks /Change /TN %%~T /Disable 2>nul
 )
-timeout /t 2 > nul
+timeout /t 5 > nul
 cls
+
