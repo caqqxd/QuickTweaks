@@ -2,9 +2,9 @@ cls
 chcp 65001 >nul 2>&1
 
 @echo off
-title !MADE BY LOFINSXDD ON GITHUB 2025!
+title !MADE BY CAQQXD ON GITHUB 2025!
 
-REM Copyright (c) 2025 caqwxd
+REM Copyright (c) 2025 caqqxd
 
 REM Permission is hereby granted, free of charge, to any person obtaining a copy
 REM of this software and associated documentation files (the "Software"), to deal
